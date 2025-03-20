@@ -1,3 +1,5 @@
+
+```md
 name:
 Un nom descriptif pour le playbook, indiquant son objectif : déployer un serveur web Apache avec des restrictions IP.
 hosts:
@@ -132,6 +134,9 @@ Déploie un modèle de configuration Apache personnalisé avec des restrictions 
 Active la configuration du site Apache.
 Démarre et active le service Apache.
 Redémarre Apache chaque fois que la configuration change.
+
+```
+
 Il garantit que seules les adresses IP spécifiées (192.168.1.10, 192.168.1.20, 192.168.1.30) peuvent accéder au serveur, offrant ainsi une sécurité basique via des restrictions IP.
 
   
