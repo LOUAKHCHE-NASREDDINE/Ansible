@@ -1,0 +1,39 @@
+# ---------------------------------------------------------------------
+# Configuration Apache2 pour un hôte virtuel spécifique
+# Ce fichier est généré dynamiquement par Ansible en utilisant Jinja2.
+# ---------------------------------------------------------------------
+
+# Nom du serveur (ServerName)
+# Cette directive définit le nom de domaine ou l'adresse IP principale pour cet hôte virtuel.
+# Exemple : "example.com" ou "192.168.1.10"
+ServerName {{ apache_server_name }}
+
+# Répertoire racine (DocumentRoot)
+# Cette directive spécifie le répertoire où se trouvent les fichiers du site web.
+# Toutes les requêtes seront servies à partir de ce répertoire.
+DocumentRoot {{ apache_document_root }}
+
+# Configuration du répertoire racine (<Directory>)
+# Les directives suivantes s'appliquent uniquement au répertoire spécifié.
+<Directory {{ apache_document_root }}>
+
+    # Désactiver les fichiers .htaccess
+    # AllowOverride None empêche les fichiers .htaccess de surcharger les directives Apache.
+    AllowOverride None
+
+    # Options du répertoire
+    # - Indexes : Affiche une liste des fichiers si aucun index n'est trouvé.
+    # - FollowSymLinks : Autorise Apache à suivre les liens symboliques.
+    Options Indexes FollowSymLinks
+
+    # Interdire l'accès par défaut
+    # Require all denied refuse l'accès à tous les utilisateurs par défaut.
+    Require all denied
+
+    # Autoriser l'accès depuis des adresses IP spécifiques
+    # La boucle suivante ajoute une directive "Require ip" pour chaque adresse IP dans la liste 'allowed_ips'.
+    {% for ip in allowed_ips %}
+    Require ip {{ ip }}
+    {% endfor %}
+
+</Directory>
