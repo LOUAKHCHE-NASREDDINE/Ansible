@@ -1,25 +1,5 @@
-<<<<<<< HEAD
-# Ansible Nginx Deployment
-
-This repository contains an Ansible playbook to deploy Nginx with IP-based access restrictions.
-
-## Structure
-- `inventory/hostnginx`: Inventory file defining the target hosts (`vm1` and `vm2`).
-- `templates/nginx.conf.j2`: Jinja2 template for the Nginx configuration.
-- `nginx.yaml`: Playbook to install and configure Nginx.
-
-## Usage
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/LOUAKHCHE-NASREDDINE/Ansible.git
-   cd Ansible
-
-=======
-```yml
 ---
-
 # Playbook : Déployer et configurer un serveur Apache avec Jinja2
-
 - name: Configurer un serveur web Apache avec un template Jinja2
   hosts: all
   become: yes  # Élévation des privilèges pour installer et configurer Apache
@@ -34,18 +14,15 @@ This repository contains an Ansible playbook to deploy Nginx with IP-based acces
       - 192.168.1.30
 
   tasks:
-
-  # 1. Installer Apache
-
-  - name: Installer le paquet Apache
+    # 1. Installer Apache
+    - name: Installer le paquet Apache
       ansible.builtin.apt:
         name: apache2
         state: present
         update_cache: yes
 
-  # 2. Créer le répertoire DocumentRoot (si nécessaire)
-
-  - name: Créer le répertoire DocumentRoot
+    # 2. Créer le répertoire DocumentRoot (si nécessaire)
+    - name: Créer le répertoire DocumentRoot
       ansible.builtin.file:
         path: "{{ apache_document_root }}"
         state: directory
@@ -53,9 +30,8 @@ This repository contains an Ansible playbook to deploy Nginx with IP-based acces
         owner: www-data
         group: www-data
 
-  # 3. Déployer le fichier de configuration Apache à partir du template Jinja2
-
-  - name: Déployer le fichier de configuration Apache
+    # 3. Déployer le fichier de configuration Apache à partir du template Jinja2
+    - name: Déployer le fichier de configuration Apache
       ansible.builtin.template:
         src: apache.conf.j2
         dest: /etc/apache2/sites-available/000-default.conf
@@ -64,28 +40,22 @@ This repository contains an Ansible playbook to deploy Nginx with IP-based acces
         group: root
       notify: Redémarrer Apache
 
-  # 4. Activer la configuration du site Apache
-
-  - name: Activer la configuration du site Apache
+    # 4. Activer la configuration du site Apache
+    - name: Activer la configuration du site Apache
       ansible.builtin.command:
         cmd: a2ensite 000-default.conf
       notify: Redémarrer Apache
 
-  # 5. Démarrer et activer le service Apache
-
-  - name: S'assurer qu'Apache est démarré et activé au boot
+    # 5. Démarrer et activer le service Apache
+    - name: S'assurer qu'Apache est démarré et activé au boot
       ansible.builtin.service:
         name: apache2
         state: started
         enabled: true
 
   handlers:
-
-  # Redémarrer Apache si nécessaire
-
-  - name: Redémarrer Apache
+    # Redémarrer Apache si nécessaire
+    - name: Redémarrer Apache
       ansible.builtin.service:
         name: apache2
         state: restarted
-```
->>>>>>> b91142b3758c304be8cef1c6cb0a28e518d1cda3
