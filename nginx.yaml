@@ -1,0 +1,39 @@
+# nginx.yaml
+---
+- name: Deploy Nginx with IP-based access restrictions
+  hosts: workers
+  become: yes
+  vars:
+    nginx_server_name: mynginx.local
+    allowed_ips:
+      - 192.168.1.50
+      - 192.168.1.60
+      - 192.168.1.70
+
+  tasks:
+    - name: Install Nginx
+      ansible.builtin.apt:
+        name: nginx
+        state: present
+        update_cache: yes
+
+    - name: Deploy Nginx config template
+      ansible.builtin.template:
+        src: nginx.conf.j2
+        dest: /etc/nginx/sites-available/default
+        mode: '0644'
+        owner: root
+        group: root
+      notify: Reload Nginx
+
+    - name: Start and enable Nginx
+      ansible.builtin.service:
+        name: nginx
+        state: started
+        enabled: true
+
+  handlers:
+    - name: Reload Nginx
+      ansible.builtin.service:
+        name: nginx
+        state: reloaded
